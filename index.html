@@ -33,8 +33,8 @@
                     </li>-->
                 </ul>
                 <form class="form-inline my-2 my-lg-0" v-if="!authenticated">
-                    <input class="form-control" type="text" v-model="user.username">
-                    <input class="form-control" type="text" v-model="user.password">
+                    <input class="form-control" type="text" placeholder="Username" v-model="user.username">
+                    <input class="form-control" type="password" placeholder="Password" v-model="user.password">
                     <button class="btn btn-outline-success" v-on:click.prevent="checkAuth">Login</button>
                 </form>
                 <button class="btn btn-outline-success" v-if="authenticated" v-on:click.prevent="logout">Logout</button>
@@ -91,14 +91,19 @@
                                     </td>
                                     <td v-if="event !== editingEvent">{{ event.weight }} {{ event.measurement }}</td>
                                     <td v-if="event == editingEvent"><input class="form-control" type="text" class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight"></td>
+
                                     <td v-if="event !== editingEvent"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</td>
                                     <td v-if="event == editingEvent"><input class="form-control" type="text" class="text-input" @keyup.enter="endEditing(event)" v-model="event.date"></td>
+
                                     <td v-if="event !== editingEvent"><i class="fa fa-percent" v-on:click="selectEvent(event.weight)" data-toggle="modal" data-target=".bs-example-modal-sm"></td>
                                     <td v-if="event !== editingEvent"><i class="fa fa-pencil" v-on:click="editEvent(event)"></i></td>
+
                                     <td v-if="event == editingEvent"></td>
                                     <td v-if="event == editingEvent"><i class="fa fa-ban" v-on:click="editEvent()"></i></td>
+
                                     <td v-if="event == editingEvent "><i class="fa fa-save" v-on:click="endEditing(event) "></i></td>
                                     <td v-if="event !== editingEvent"><i class="fa fa-ban" v-on:click="remove(event)"></i></td>
+
                                     <td v-if="event == editingEvent"><i class="fa fa-line-chart" v-on:click=""></i></td>
                                     <td v-if="event !== editingEvent"><i class="fa fa-line-chart" v-on:click="setGraph(event.movement)"></i></td>
 

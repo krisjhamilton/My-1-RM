@@ -86,7 +86,7 @@ var app = new Vue({
         fetchEvents: function() {
             var events = [];
             let options = {
-                "pageSize": 20,
+                "pageSize": 100,
                 "pageNumber": 1,
                 "filter": [{
                     "fieldName": "user",
