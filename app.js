@@ -123,15 +123,22 @@ var app = new Vue({
             this.editingEvent = event;
         },
 
+        cancelEditEvent: function(event) {
+            this.editingEvent = event;
+            this.fetchEvents();
+        },
+
         remove: function(event) {
-            backand.object.remove('movements', event.id)
-                .then(res => {
-                    console.log('deleted');
-                    this.fetchEvents();
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
+            if (confirm('Are you sure you want to remove the ' + event.weight + event.measurement + ' ' + event.movement + '?')) {
+                backand.object.remove('movements', event.id)
+                    .then(res => {
+                        console.log('deleted');
+                        this.fetchEvents();
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
         },
 
         endEditing: function(event) {

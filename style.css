@@ -16,3 +16,8 @@ th {
     max-height: 300px;
     overflow: scroll;
 }
+
+.card-block {
+    padding: 1.60rem;
+    min-height: 120px;
+}

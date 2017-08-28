@@ -43,31 +43,75 @@
         <br/>
         <div v-if="authenticated" class="container">
             <div class="mdl-grid" id="my-table">
-                <div class="mdl-cell mdl-cell--4-col">
-                    <div class="mdl-card mdl-shadow--2dp">
-                        <div class="mdl-card__title">
-                            <h4 class="mdl-card__title-text">Enter your 1 Rep Max</h4>
-                        </div>
-
-                        <div class="mdl-card__supporting-text">
-                            <select class="form-control " placeholder="Movement" v-model="event.movement">
-                                <option v-for="movement in movements" >{{movement.movement}}</option>
-                            </select>
-                            <input class="form-control" placeholder="Weight / Height" v-model="event.weight">
-                            <select class="form-control" v-model="event.measurement">
+                <div class="mdl-cell mdl-cell--3-col">
+                    <h4 class="">Enter your 1 Rep Max</h4>
+                    <select class="form-control " placeholder="Movement" v-model="event.movement">
+                        <option v-for="movement in movements" >{{movement.movement}}</option>
+                    </select>
+                    <input class="form-control" placeholder="Weight / Height" v-model="event.weight">
+                    <select class="form-control" v-model="event.measurement">
                               <option value="kg" selected>kg</option>
                               <option value="cm">cm</option>
                             </select>
-                            <input type="date" class="form-control" placeholder="Date" v-model="event.date">
+                    <input type="date" class="form-control" placeholder="Date" v-model="event.date">
+                    <button class="btn btn-sm btn-outline-primary" v-on:click="addEvent">Add</button>
+                </div>
+
+
+                <div class="mdl-cell mdl-cell--9-col" v-if="!graphOn">
+                    <div div v-for="event in events">
+                        <div v-if="event !== editingEvent">
+                            <div class="mdl-grid">
+                                <div class=" mdl-cell mdl-cell--6-col">
+                                    <div class="card">
+                                        <div class="card-block clearfixed">
+                                            <h4 class="card-title">{{ event.weight }}{{ event.measurement }} {{ event.movement }} <button type="button" class="btn btn-secondary pull-right" v-on:click="selectEvent(event.weight)" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-percent" ></i></button></h4>
+                                            <h6 class="card-subtitle mb-2 text-muted"><i class="glyphicon glyphicon-calendar" v-if="event.date"></i> {{ event.date | moment }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" mdl-cell mdl-cell--6-col">
+                                    <div class="btn-group-vertical" role="group" aria-label="Basic example">
+
+                                        <button type="button" class="btn btn-secondary" v-on:click="editEvent(event)"><i class="fa fa-pencil" ></i></button>
+                                        <button type="button" class="btn btn-secondary" v-on:click="remove(event)" onsubmit="return confirm('Do you really want to submit the form?');"><i class="fa fa-ban"></i></button>
+                                        <!-- <button type="button" class="btn btn-secondary" v-on:click="setGraph(event.movement)"><i class="fa fa-line-chart" ></i></button> -->
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
                         </div>
 
-                        <div class="mdl-card__actions mdl-card--border">
-                            <button class="btn btn-sm btn-outline-primary" v-on:click="addEvent">Add</button>
+                        <div v-if="event == editingEvent">
+                            <div class="mdl-grid">
+                                <div class=" mdl-cell mdl-cell--6-col">
+                                    <div class="card">
+                                        <div class="card-block">
+                                            <form class="form-inline">
+                                                <input class="form-control col-sm-2" type="text" class="text-input" @keyup.enter="endEditing(event)" v-model="event.weight">
+                                                <select class="form-control col-sm-4" placeholder="Movement" v-model="event.movement">
+                                                    <option v-for="movement in movements" >{{movement.movement}}</option>
+                                                </select>
+                                            </form>
+                                            <i class="glyphicon glyphicon-calendar" v-if="event.date"></i> <input class="form-control text-input col-sm-6" type="date" @keyup.enter="endEditing(event)" v-model="event.date">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" mdl-cell mdl-cell--6-col">
+                                    <div class="btn-group-vertical" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-secondary" v-on:click="cancelEditEvent()"><i class="fa fa-ban" ></i></button>
+                                        <button type="button" class="btn btn-secondary" v-on:click="endEditing(event)"><i class="fa fa-save"></i></button>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
                         </div>
                     </div>
                 </div>
+                <br />
 
-                <div class="mdl-cell mdl-cell--8-col" v-if="!graphOn">
+
+                <!-- <div class="mdl-cell mdl-cell--8-col" v-if="!graphOn">
                     <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" style="width:100%;">
                         <div class="">
                             <thead>
@@ -111,7 +155,7 @@
                             </tbody>
                         </div>
                     </table>
-                </div>
+                </div> -->
 
                 <div class="mdl-cell mdl-cell--8-col" v-if="graphOn">
                     <area-chart :data="graphMovement"></area-chart>
@@ -190,7 +234,7 @@
     <script src="https://unpkg.com/chart.js@2.5.0/dist/Chart.bundle.js"></script>
     <script src="https://unpkg.com/chartkick@2.2.3"></script>
     <script src="https://unpkg.com/vue-chartkick@0.2.0"></script>
-
+    <link rel="stylesheet" href="style.css">
     <script src="app.js"></script>
 
 </body>
